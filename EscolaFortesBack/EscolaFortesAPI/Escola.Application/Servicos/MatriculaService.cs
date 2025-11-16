@@ -38,21 +38,18 @@ namespace Escola.Application.Servicos
 
         public async Task<MatriculaDTO> CreateMatriculaAsync(CreateMatriculaDTO createMatriculaDto)
         {
-            // Verificar se aluno existe
             var aluno = await _alunoRepository.GetByIdAsync(createMatriculaDto.AlunoId);
             if (aluno == null)
             {
                 throw new InvalidOperationException("Aluno não encontrado.");
             }
 
-            // Verificar se curso existe
             var curso = await _cursoRepository.GetByIdAsync(createMatriculaDto.CursoId);
             if (curso == null)
             {
                 throw new InvalidOperationException("Curso não encontrado.");
             }
 
-            // Verificar se aluno já está matriculado no curso
             if (await _matriculaRepository.ExistsAsync(createMatriculaDto.AlunoId, createMatriculaDto.CursoId))
             {
                 throw new InvalidOperationException("Aluno já está matriculado neste curso.");
